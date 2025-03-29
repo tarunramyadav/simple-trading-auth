@@ -9,7 +9,7 @@
         appId: "cm8u305bh014ppienotvtaskr"
       });
 
-      window.login = async () => {
+      const login = async () => {
         try {
           console.log("🔐 Starting login.....");
           await privy.login();
@@ -21,14 +21,19 @@
             window.location.href = `https://tarunramyadav.github.io/simple-trading-auth/success.html?wallet=${wallet}`;
           }
         } catch (err) {
-          console.error("❌ Login failed..", err);
+          console.error("❌ Login failed", err);
           document.body.innerHTML = "<h2>Login failed. Check console.</h2>";
         }
       };
+
+      // ✅ Bind click AFTER DOM is ready
+      window.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("connect-button").addEventListener("click", login);
+      });
     </script>
   </head>
   <body>
     <h2>Click below to login with Privy</h2>
-    <button onclick="login()">Connect Wallet</button>
+    <button id="connect-button">Connect Wallet</button>
   </body>
 </html>
