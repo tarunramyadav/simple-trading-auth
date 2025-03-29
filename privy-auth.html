@@ -2,11 +2,19 @@
 <html>
   <head>
     <title>Privy Login</title>
-    <script src="https://sdk.privy.io/client-sdk/v1/privy.umd.min.js"></script>
+    <script src="https://cdn.privy.io/client-sdk/v1/privy.umd.min.js"></script>
     <script>
-      const privy = new PrivyClient.PrivyClient({
-        appId: "cm8u305bh014ppienotvtaskr"
-      });
+      let privy;
+
+      window.onload = () => {
+        try {
+          privy = new Privy.PrivyClient({
+            appId: "cm8u305bh014ppienotvtaskr"
+          });
+        } catch (err) {
+          console.error("❌ SDK Init Failed", err);
+        }
+      };
 
       async function login() {
         try {
@@ -14,7 +22,7 @@
           await privy.login();
           const user = await privy.getUser();
           const wallet = user?.wallet?.address;
-          console.log("✅ Got wallet:", wallet);
+          console.log("✅ Wallet:", wallet);
 
           if (wallet) {
             window.location.href = `https://tarunramyadav.github.io/simple-trading-auth/success.html?wallet=${wallet}`;
