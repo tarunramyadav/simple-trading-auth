@@ -1,21 +1,32 @@
-<!-- privy-auth.html -->
 <!DOCTYPE html>
 <html>
   <head>
     <title>Privy Auth</title>
     <script type="module">
-      import { PrivyClient } from "https://cdn.jsdelivr.net/npm/@privy-io/react-auth/+esm";
+      import { PrivyClient } from "https://sdk.privy.io/client-sdk/v1/index.js";
 
       const privy = new PrivyClient({
         appId: "cm8u305bh014ppienotvtaskr"
       });
 
-      privy.login().then((user) => {
-        const wallet = user.wallet?.address;
-        if (wallet) {
-          window.location.href = `https://tarunramyadav.github.io/simple-trading-auth/success.html?wallet=${wallet}`;
+      window.onload = async () => {
+        try {
+          console.log("🚀 Privy loaded. Triggering login...");
+          await privy.login();
+
+          const user = await privy.getUser();
+          const wallet = user?.wallet?.address;
+
+          console.log("✅ Login successful. Wallet:", wallet);
+
+          if (wallet) {
+            window.location.href = `https://tarunramyadav.github.io/simple-trading-auth/success.html?wallet=${wallet}`;
+          }
+        } catch (err) {
+          console.error("❌ Login failed", err);
+          document.body.innerHTML = "<h2>Login failed. Check console.</h2>";
         }
-      });
+      };
     </script>
   </head>
   <body>
